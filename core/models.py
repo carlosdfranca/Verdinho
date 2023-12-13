@@ -34,4 +34,4 @@ class Frequencia(Base):
     qtd_faltas = models.IntegerField("Quantidade de Faltas")
 
     def __str__(self):
-        return f'{self.ano_mes} - {self.mes_referencia}'
+        return f'{self.mes_referencia} - {self.mes_referencia}'
