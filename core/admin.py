@@ -14,7 +14,8 @@ class EquipeAdmin(admin.ModelAdmin):
 @admin.register(DiasUteis)
 class DiasUteisAdmin(admin.ModelAdmin):
     list_display = (
-        'ano_mes',
+        'ano',
+        'mes',
         'qtd_du'
     )
 
@@ -24,6 +25,7 @@ class FrequenciaAdmin(admin.ModelAdmin):
     list_display = (
         'usuario',
         'mes_referencia',
+        'ano_referencia',
         'qtd_home_office',
         'qtd_faltas'
     )
