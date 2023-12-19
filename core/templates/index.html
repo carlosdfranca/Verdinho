@@ -70,16 +70,16 @@
                     new ApexCharts(document.querySelector("#reportsChart"), {
                       series: [{
                         name: 'Nome1',
-                        data: [31, 40, 28, 51, 42, 82, 56],
+                        data: [38, 91, 71, 83, 56, 89, 66, 48, 81, 83, 24, 96]
                       }, {
                         name: 'Nome2',
-                        data: [11, 32, 45, 32, 34, 52, 41]
+                        data: [71, 71, 54, 52, 33, 58, 88, 78, 66, 72, 87, 61]
                       }, {
                         name: 'Nome3',
-                        data: [15, 11, 32, 18, 9, 24, 11]
+                        data: [95, 29, 73, 89, 80, 64, 67, 46, 45, 20, 54, 54]
                       }],
                       chart: {
-                        height: 350,
+                        height: 400,
                         type: 'area',
                         toolbar: {
                           show: false
@@ -106,14 +106,22 @@
                         width: 2
                       },
                       xaxis: {
-                        type: 'numeric',
-                        categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                        type: 'category',
+                        categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                        tickAmount: 12,
+                        forceNiceScale: true,
+                        labels: {
+                          formatter: function (value) {
+                            return Math.round(value); // Arredonda para o número inteiro mais próximo
+                          },
+                          // offsetX: -10 // Ajuste o valor conforme necessário
+                        }
                       },
-                      tooltip: {
-                        x: {
-                          format: 'dd/MM/yy HH:mm'
-                        },
-                      }
+                      // tooltip: {
+                      //   x: {
+                      //     format: 'dd/MM/yy HH:mm'
+                      //   },
+                      // }
                     }).render();
                   });
                 </script>
