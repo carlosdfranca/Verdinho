@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main id="main" class="main">
+
+    <!-- Page Title -->
+    <div class="pagetitle">
+        <h1>Calcular Verdinho</h1>
+    </div>
+    <!-- End Page Title -->
+
+    <section class="section dashboard">
+        <div class="row">
+
+
+
+            <!-- Left side columns -->
+            <div class="col-lg-3">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Dados para calcular o Verdinho</h5>
+
+
+                            <form id="calculadora" method="post" action="{% url 'calculadora' %}">
+                                {% csrf_token %}
+                                <div class="row mb-3">
+                                    <label for="inputNumber" class="col-sm-8 col-form-label">Dias de HomeOffice</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form-control" id="homeoffice" , name="homeoffice">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputNumber" class="col-sm-8 col-form-label">Faltas</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form-control" id="faltas" , name="faltas">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputNumber" class="col-sm-8 col-form-label">Mês de referência</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form-control" id="mes_referencia" , name="mes_referencia">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-primary">Calcular</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Left side columns -->
+
+        </div>
+    </section>
+
+</main><!-- End #main -->
+{% endblock %}

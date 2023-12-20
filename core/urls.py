@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .views import IndexView, UsuarioView
+from .views import IndexView, CalculadoraView
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
-    path('usuario', UsuarioView.as_view(), name='usuario')
+    path('calculadora', CalculadoraView.as_view(), name='calculadora')
 ]
