@@ -11,9 +11,6 @@
 
     <section class="section dashboard">
         <div class="row">
-
-
-
             <!-- Left side columns -->
             <div class="col-lg-4">
                 <div class="row">
@@ -24,26 +21,47 @@
 
                             <form id="calculadora" method="post" action="{% url 'calculadora' %}">
                                 {% csrf_token %}
-                                <div class="row mb-3">
-                                    <label for="inputNumber" class="col-sm-8 col-form-label">Dias de HomeOffice</label>
-                                    <div class="col-sm-4">
-                                        <input type="number" class="form-control" id="homeoffice" , name="homeoffice">
+
+                                <div class="row">
+                                    <div class="col-6 pe-5 me-5">
+
+                                        <div class='d-flex justify-content-center mb-3'>
+                                            <label for="inputNumber" class="col-sm-7 col-form-label">HomeOffice:</label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="homeoffice" ,
+                                                    name="homeoffice">
+                                            </div>
+                                        </div>
+
+                                        <div class='d-flex justify-content-center'>
+                                            <label for="inputNumber" class="col-sm-7 col-form-label">Faltas:</label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="faltas" , name="faltas">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-4">
+
+                                        <div class='d-flex justify-content-center mb-3'>
+                                            <label for="inputNumber" class="col-sm-6 col-form-label">Mês:</label>
+                                            <input type="number" class="form-control" id="mes_referencia" ,
+                                                name="mes_referencia">
+                                        </div>
+
+                                        <div class='d-flex justify-content-center mb-3'>
+                                            <label for="inputNumber" class="col-sm-6 col-form-label">Ano:</label>
+                                            <input type="number" class="form-control" id="ano_referencia" ,
+                                                name="ano_referencia">
+                                        </div>
+
+
+        
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <label for="inputNumber" class="col-sm-8 col-form-label">Faltas</label>
-                                    <div class="col-sm-4">
-                                        <input type="number" class="form-control" id="faltas" , name="faltas">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputNumber" class="col-sm-8 col-form-label">Mês de referência</label>
-                                    <div class="col-sm-4">
-                                        <input type="number" class="form-control mb-4" id="mes_referencia" ,
-                                            name="mes_referencia">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
+
+                                <div class="row mb-3 mt-2 me-1">
                                     <div class="col-sm-12 text-end">
                                         <button type="submit" class="btn btn-primary">Calcular</button>
                                     </div>
@@ -54,46 +72,76 @@
                 </div>
             </div><!-- End Left side columns -->
 
-            <div class="col-lg-4"> <!-- Right side columns -->
-                    <div class="card info-card">
+            <div class="col-lg-8"> <!-- Right side columns -->
+                <div class="row">
 
-                        <div class="card-body container text-center">
-                            <h5 class="card-title">NOME</h5>
-                            <div class="d-flex align-items-center mb-4 ms-4">
+                    <!-- Sales Card -->
+                    <div class="col-xxl-4 col-md-6">
+                        <div class="card info-card sales-card">
 
-                                <div class="d-flex align-items-center mb-3 ms-4">
-                                    <div class="card-icon rounded-circle bg-primary d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-bus-front-fill"></i>
+                            <div class="card-body">
+                                <h5 class="card-title">Vale Transporte</h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="ri-bus-fill"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>R$3,264</h6>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex align-items-center mb-3 ps-3 ms-4">
-                                    <div class="card-icon rounded-circle bg-warning d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-cup-hot-fill"></i>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h6>R$3,264</h6>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="ms-5 ps-5">
-                                <div class="d-flex align-items-center mb-3 ps-5">
-                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-cash-coin"></i>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h6>R$3,264</h6>
+                                        <h6>R$ {{ vt_mes }}</h6>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
-                </div><!-- End Revenue Card -->
+                    </div><!-- End Sales Card -->
+
+                    <!-- Customers Card -->
+                    <div class="col-xxl-4 col-xl-12">
+
+                        <div class="card info-card customers-card">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Vale Refeição</h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="ri-restaurant-2-fill"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>R$ {{ vr_mes }}</h6>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div><!-- End Customers Card -->
+
+                    <!-- Revenue Card -->
+                    <div class="col-xxl-4 col-md-6">
+                        <div class="card info-card revenue-card">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Total do Verdinho</h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-currency-dollar"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>R$ {{ beneficio }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div><!-- End Revenue Card -->
+
+
+                </div>
             </div> <!-- End Right side columns -->
 
         </div>
