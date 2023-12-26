@@ -2,6 +2,7 @@ from django.views.generic import TemplateView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LogoutView
 import locale
 
 
@@ -68,3 +69,4 @@ class CalculadoraView(LoginRequiredMixin, FormView):
 
 class User(LoginRequiredMixin, TemplateView):
     template_name = 'user.html'
+    
