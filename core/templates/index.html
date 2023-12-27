@@ -22,14 +22,14 @@
             <div class="card info-card revenue-card">
 
               <div class="card-body">
-                <h5 class="card-title">NOME <span>| Último Mês</span></h5>
+                <h5 class="card-title">Último registro<span>| {{ ultimo_mes }}</span></h5>
 
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-currency-dollar"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>R$3,264</h6>
+                    <h6>R${{ ultimo_beneficio }}</h6>
                   </div>
                 </div>
               </div>
@@ -43,12 +43,12 @@
             <div class="card">
 
               <div class="filter">
+                <!-- Aqui vai ficar o filtro com para ele selecionar o ano de acordo com o que ele tem no model Frequencia -->
                 <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                   <li class="dropdown-header text-start">
-                    <h6>Filtro</h6>
+                    <h6>Ano</h6>
                   </li>
-
                   <li><a class="dropdown-item" href="#">2023</a></li>
                 </ul>
               </div>
@@ -62,10 +62,9 @@
                 <script>
                   document.addEventListener("DOMContentLoaded", () => {
                     new ApexCharts(document.querySelector("#reportsChart"), {
-                      series: [{
-                        name: 'Nome3',
-                        data: [95, 29, 73, 89, 80, 64, 67, 46, 45, 20, 54, 54]
-                      }],
+                      series: [
+                        { name: '{{ request.user.first_name }}', data: {{ beneficios| safe }} }
+                      ],
                       chart: {
                         height: 400,
                         type: 'area',
@@ -76,7 +75,7 @@
                       markers: {
                         size: 4
                       },
-                      colors: ['#4154f1', '#2eca6a', '#ff771d'],
+                      colors: ['{{ request.user.cor_grafico }}'],
                       fill: {
                         type: "gradient",
                         gradient: {
@@ -94,22 +93,9 @@
                         width: 2
                       },
                       xaxis: {
-                        type: 'category',
-                        categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                        tickAmount: 12,
+                        categories: {{ meses| safe }}, // Aqui vão ficar os meses do ano filtrado
                         forceNiceScale: true,
-                        labels: {
-                          formatter: function (value) {
-                            return Math.round(value); // Arredonda para o número inteiro mais próximo
-                          },
-                          // offsetX: -10 // Ajuste o valor conforme necessário
-                        }
                       },
-                      // tooltip: {
-                      //   x: {
-                      //     format: 'dd/MM/yy HH:mm'
-                      //   },
-                      // }
                     }).render();
                   });
                 </script>
