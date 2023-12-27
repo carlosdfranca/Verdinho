@@ -1,9 +1,11 @@
+from typing import Any
 from django.shortcuts import render
 from django.http.response import HttpResponse as HttpResponse
 from django.views.generic import TemplateView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 
 
 import locale
@@ -19,11 +21,13 @@ from .forms import CalculadoraForm
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'index.html'
 
-    def get(self, request, *args, **kwargs):
+    def get_context_data(self, **kwargs):
+
+        context =  super().get_context_data(**kwargs)
 
         locale.setlocale(locale.LC_TIME, 'pt_BR')
 
-        frequencias = Frequencia.objects.filter(usuario=request.user, ano_referencia=2023).order_by('mes_referencia')
+        frequencias = Frequencia.objects.filter(usuario=self.request.user, ano_referencia=2023).order_by('mes_referencia')
         dias_uteis = DiasUteis.objects.filter(ano=2023)
 
         beneficios = []
@@ -31,8 +35,8 @@ class IndexView(LoginRequiredMixin, TemplateView):
 
         for frequencia in frequencias:
             dias_trabalhados = dias_uteis.get(mes=frequencia.mes_referencia).qtd_du - frequencia.qtd_faltas
-            vr_mes = request.user.vr_dia * dias_trabalhados
-            vt_mes = request.user.vt_dia * (dias_trabalhados - frequencia.qtd_home_office)
+            vr_mes = self.request.user.vr_dia * dias_trabalhados
+            vt_mes = self.request.user.vt_dia * (dias_trabalhados - frequencia.qtd_home_office)
             beneficio = vr_mes + vt_mes
 
             beneficios.append(float(beneficio))
@@ -47,15 +51,17 @@ class IndexView(LoginRequiredMixin, TemplateView):
 
         ultimo_beneficio = "{:.2f}".format(ultimo_beneficio)
         
+        anos_disponiveis = Frequencia.objects.filter(usuario=self.request.user).values_list('ano_referencia', flat=True).distinct()
 
         context = {
             'beneficios': beneficios,
             'meses': meses,
             'ultimo_beneficio': ultimo_beneficio,
-            'ultimo_mes': ultimo_mes
+            'ultimo_mes': ultimo_mes,
+            'anos_disponiveis': anos_disponiveis
         }
 
-        return render(request, self.template_name, context)
+        return context
     
 
 
@@ -114,3 +120,48 @@ class CalculadoraView(LoginRequiredMixin, FormView):
 
 class User(LoginRequiredMixin, TemplateView):
     template_name = 'user.html'
+
+
+def dados_do_grafico(request):
+
+    if request.is_ajax() and request.method == 'GET':
+        locale.setlocale(locale.LC_TIME, 'pt_BR')
+
+        frequencias = Frequencia.objects.filter(usuario=request.user, ano_referencia=2023).order_by('mes_referencia')
+        dias_uteis = DiasUteis.objects.filter(ano=2023)
+
+        beneficios = []
+        meses = []
+
+        for frequencia in frequencias:
+            dias_trabalhados = dias_uteis.get(mes=frequencia.mes_referencia).qtd_du - frequencia.qtd_faltas
+            vr_mes = request.user.vr_dia * dias_trabalhados
+            vt_mes = request.user.vt_dia * (dias_trabalhados - frequencia.qtd_home_office)
+            beneficio = vr_mes + vt_mes
+
+            beneficios.append(float(beneficio))
+
+            mes = calendar.month_name[frequencia.mes_referencia]
+
+            meses.append(mes)
+        
+
+        ultimo_beneficio = beneficios[-1]
+        ultimo_mes = meses[-1]
+
+        ultimo_beneficio = "{:.2f}".format(ultimo_beneficio)
+        
+        anos_disponiveis = Frequencia.objects.filter(usuario=request.user).values_list('ano_referencia', flat=True).distinct()
+
+        data = {
+            'beneficios': beneficios,
+            'meses': meses,
+            'ultimo_beneficio': ultimo_beneficio,
+            'ultimo_mes': ultimo_mes,
+            'anos_disponiveis': anos_disponiveis
+        }
+
+        return JsonResponse(data)
+
+    return JsonResponse({'error': 'Invalid request'})
+
