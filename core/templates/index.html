@@ -49,9 +49,7 @@
                   <li class="dropdown-header text-start">
                     <h6>Ano</h6>
                   </li>
-                  {% for ano in anos_disponiveis %}
-                  <li><a class="dropdown-item" href="#" data-ano="{{ ano }}">{{ ano }}</a></li>
-                  {% endfor %}
+                  <li><a class="dropdown-item" href="#">2023</a></li>
                 </ul>
               </div>
 
@@ -63,76 +61,42 @@
 
                 <script>
                   document.addEventListener("DOMContentLoaded", () => {
-                    function updateData(ano) {
-                      // Chamar a view AJAX para obter dados atualizados
-                      fetch(`/core/dados_do_grafico/?ano=${ano}`)
-                        .then(response => response.json())
-                        .then(data => {
-                          // Atualizar o gráfico com os novos dados
-                          const apexChart = new ApexCharts(document.querySelector("#reportsChart"), {
-                            series: [{
-                              name: '{{ request.user.first_name }}',
-                              data: data.beneficios
-                            }],
-                            chart: {
-                              height: 400,
-                              type: 'area',
-                              toolbar: {
-                                show: false
-                              },
-                            },
-                            markers: {
-                              size: 4
-                            },
-                            colors: ['{{ request.user.cor_grafico }}'],
-                            fill: {
-                              type: "gradient",
-                              gradient: {
-                                shadeIntensity: 1,
-                                opacityFrom: 0.3,
-                                opacityTo: 0.4,
-                                stops: [0, 90, 100]
-                              }
-                            },
-                            dataLabels: {
-                              enabled: false
-                            },
-                            stroke: {
-                              curve: 'smooth',
-                              width: 2
-                            },
-                            xaxis: {
-                              type: 'category',
-                              categories: data.meses,
-                              tickAmount: 12,
-                              forceNiceScale: true,
-                              labels: {
-                                formatter: function (value) {
-                                  return Math.round(value);
-                                },
-                              }
-                            },
-                          });
-
-                          apexChart.render();
-                        })
-                        .catch(error => {
-                          console.error('Erro ao buscar dados do gráfico:', error);
-                        });
-                    }
-
-                    // Obter o ano inicial para carregar o gráfico
-                    const primeiroAnoDisponivel = document.querySelector('.dropdown-item[data-ano]').getAttribute('data-ano');
-                    updateData(primeiroAnoDisponivel);
-
-                    const dropdownItems = document.querySelectorAll('.dropdown-item[data-ano]');
-                    dropdownItems.forEach(item => {
-                      item.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        const selectedYear = this.getAttribute('data-ano');
-                        updateData(selectedYear);
-                      });
-                    });
+                    new ApexCharts(document.querySelector("#reportsChart"), {
+                      series: [
+                        { name: '{{ request.user.first_name }}', data: {{ beneficios| safe }} }
+                      ],
+                      chart: {
+                        height: 400,
+                        type: 'area',
+                        toolbar: {
+                          show: false
+                        },
+                      },
+                      markers: {
+                        size: 4
+                      },
+                      colors: ['{{ request.user.cor_grafico }}'],
+                      fill: {
+                        type: "gradient",
+                        gradient: {
+                          shadeIntensity: 1,
+                          opacityFrom: 0.3,
+                          opacityTo: 0.4,
+                          stops: [0, 90, 100]
+                        }
+                      },
+                      dataLabels: {
+                        enabled: false
+                      },
+                      stroke: {
+                        curve: 'smooth',
+                        width: 2
+                      },
+                      xaxis: {
+                        categories: {{ meses| safe }}, // Aqui vão ficar os meses do ano filtrado
+                        forceNiceScale: true,
+                      },
+                    }).render();
                   });
                 </script>
                 <!-- End Line Chart -->
