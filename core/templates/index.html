@@ -56,50 +56,7 @@
               <div class="card-body">
                 <h5 class="card-title">Dados Anuais <span>/2023</span></h5>
 
-                <!-- Line Chart -->
-                <div id="reportsChart"></div>
-
-                <script>
-                  document.addEventListener("DOMContentLoaded", () => {
-                    new ApexCharts(document.querySelector("#reportsChart"), {
-                      series: [
-                        { name: '{{ request.user.first_name }}', data: {{ beneficios| safe }} }
-                      ],
-                      chart: {
-                        height: 400,
-                        type: 'area',
-                        toolbar: {
-                          show: false
-                        },
-                      },
-                      markers: {
-                        size: 4
-                      },
-                      colors: ['{{ request.user.cor_grafico }}'],
-                      fill: {
-                        type: "gradient",
-                        gradient: {
-                          shadeIntensity: 1,
-                          opacityFrom: 0.3,
-                          opacityTo: 0.4,
-                          stops: [0, 90, 100]
-                        }
-                      },
-                      dataLabels: {
-                        enabled: false
-                      },
-                      stroke: {
-                        curve: 'smooth',
-                        width: 2
-                      },
-                      xaxis: {
-                        categories: {{ meses| safe }}, // Aqui vão ficar os meses do ano filtrado
-                        forceNiceScale: true,
-                      },
-                    }).render();
-                  });
-                </script>
-                <!-- End Line Chart -->
+        
 
               </div>
 

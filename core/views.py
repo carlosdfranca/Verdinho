@@ -19,43 +19,43 @@ from .forms import CalculadoraForm
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'index.html'
 
-    def get(self, request, *args, **kwargs):
+    # def get(self, request, *args, **kwargs):
 
-        locale.setlocale(locale.LC_TIME, 'pt_BR')
+    #     locale.setlocale(locale.LC_TIME, 'pt_BR')
 
-        frequencias = Frequencia.objects.filter(usuario=request.user, ano_referencia=2023).order_by('mes_referencia')
-        dias_uteis = DiasUteis.objects.filter(ano=2023)
+    #     frequencias = Frequencia.objects.filter(usuario=request.user, ano_referencia=2023).order_by('mes_referencia')
+    #     dias_uteis = DiasUteis.objects.filter(ano=2023)
 
-        beneficios = []
-        meses = []
+    #     beneficios = []
+    #     meses = []
 
-        for frequencia in frequencias:
-            dias_trabalhados = dias_uteis.get(mes=frequencia.mes_referencia).qtd_du - frequencia.qtd_faltas
-            vr_mes = request.user.vr_dia * dias_trabalhados
-            vt_mes = request.user.vt_dia * (dias_trabalhados - frequencia.qtd_home_office)
-            beneficio = vr_mes + vt_mes
+    #     for frequencia in frequencias:
+    #         dias_trabalhados = dias_uteis.get(mes=frequencia.mes_referencia).qtd_du - frequencia.qtd_faltas
+    #         vr_mes = request.user.vr_dia * dias_trabalhados
+    #         vt_mes = request.user.vt_dia * (dias_trabalhados - frequencia.qtd_home_office)
+    #         beneficio = vr_mes + vt_mes
 
-            beneficios.append(float(beneficio))
+    #         beneficios.append(float(beneficio))
 
-            mes = calendar.month_name[frequencia.mes_referencia]
+    #         mes = calendar.month_name[frequencia.mes_referencia]
 
-            meses.append(mes)
+    #         meses.append(mes)
         
 
-        ultimo_beneficio = beneficios[-1]
-        ultimo_mes = meses[-1]
+    #     ultimo_beneficio = beneficios[-1]
+    #     ultimo_mes = meses[-1]
 
-        ultimo_beneficio = "{:.2f}".format(ultimo_beneficio)
+    #     ultimo_beneficio = "{:.2f}".format(ultimo_beneficio)
         
 
-        context = {
-            'beneficios': beneficios,
-            'meses': meses,
-            'ultimo_beneficio': ultimo_beneficio,
-            'ultimo_mes': ultimo_mes
-        }
+    #     context = {
+    #         'beneficios': beneficios,
+    #         'meses': meses,
+    #         'ultimo_beneficio': ultimo_beneficio,
+    #         'ultimo_mes': ultimo_mes
+    #     }
 
-        return render(request, self.template_name, context)
+    #     return render(request, self.template_name, context)
     
 
 
@@ -63,6 +63,9 @@ class CalculadoraView(LoginRequiredMixin, FormView):
     template_name = 'calculadora.html'
     form_class = CalculadoraForm
     success_url = reverse_lazy('calculadora')
+
+    def is_user_in_group(user, group_name):
+        return user.is_authenticated and user.groups.filter(name=group_name).exists()
 
     def form_valid(self, form, *args, **kwargs):
         # Obtenha os valores do formulário

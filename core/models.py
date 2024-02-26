@@ -18,7 +18,6 @@ MESES = (
 
 
 
-
 # Create your models here.
 class Base(models.Model):
     criado = models.DateField('Criação', auto_now_add=True)

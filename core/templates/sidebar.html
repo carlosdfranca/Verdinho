@@ -4,12 +4,14 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
+        {% if is_admin %}
         <li class="nav-item">
-            <a class="nav-link {% if request.path != '/' %}collapsed{% endif %}" href="{% url 'index' %}">
-                <i class="bi bi-grid"></i>
-                <span>Relatório Geral</span>
+            <a class="nav-link" href="{% url 'admin:index' %}" target="_blank">
+                <i class="bi bi-gear"></i>
+                <span>Painel Admin</span>
             </a>
         </li>
+        {% endif %}
 
         <li class="nav-item">
             <a class="nav-link {% if request.path != '/calculadora' %}collapsed{% endif %}" href="{% url 'calculadora' %}">
